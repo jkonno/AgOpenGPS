@@ -20,5 +20,5 @@ jobs:
       - name: Merge Upstream Develop
         run: |
           git checkout develop
-          git merge upstream/develop
+          git merge --allow-unrelated-histories upstream/develop
           git push origin develop
