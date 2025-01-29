@@ -11,7 +11,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+        
+      - name: Set Git Identity (Fix Committer Identity Issue)
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          
       - name: Add Upstream Repo
         run: |
           git remote add upstream https://github.com/AgOpenGPS-Official/AgOpenGPS.git
