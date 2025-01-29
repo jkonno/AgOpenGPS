@@ -227,6 +227,11 @@ namespace AgOpenGPS
         /// </summary>
         public CWindowsSettingsBrightnessController displayBrightness;
 
+        //guidance variables
+        public short guidanceLineDistanceOff;
+        public short guidanceLineSteerAngle;
+        public short guidanceLineSpeed;
+
         #endregion // Class Props and instances
 
         //The method assigned to the PowerModeChanged event call

@@ -444,6 +444,23 @@ namespace AgOpenGPS
             //public int  = 12;
         }
 
+        //AutoSteerData for automatic speed profile sending
+        public class CPGN_E6
+        {
+            /// <summary>
+            /// 8 bytes
+            /// </summary>
+            public byte[] pgn = new byte[] { 0x80, 0x81, 0x7f, 0xE6, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
+            public int speedLo = 5;
+            public int speedHi = 6;
+            public int targetSpeedLo = 7;  // Add these two new fields
+            public int targetSpeedHi = 8;  // for target speed
+            public int movementFlag = 9; // F / R / stop
+            public void Reset()
+            {
+            }
+        }
+
         //pgn instances
 
         /// <summary>
@@ -490,6 +507,11 @@ namespace AgOpenGPS
         /// Section Symmetric PGN - 229 - EB
         /// </summary>
         public CPGN_E5 p_229 = new CPGN_E5();
+
+        /// <summary>
+        /// AutoSteerData PGN - 230 - E6
+        /// </summary>
+        public CPGN_E6 p_230 = new CPGN_E6();
 
         /// <summary>
         /// LatitudeLongitude - D0 - 

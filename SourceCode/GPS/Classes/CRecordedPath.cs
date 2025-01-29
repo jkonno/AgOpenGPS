@@ -165,7 +165,14 @@ namespace AgOpenGPS
             if (isFollowingDubinsToPath)
             {
                 //set a speed of 10 kmh
-                mf.sim.stepDistance = shuttleDubinsList[C].speed / 50;
+                //mf.sim.stepDistance = shuttleDubinsList[C].speed / 50;
+
+                // Get speed from recorded path and convert to mm/s (*10 for precision)
+                double targetSpeed = shuttleDubinsList[C].speed;
+                mf.sim.stepDistance = targetSpeed / 34.86;
+                    
+                // Store speed in same way as steer angle - as short integer
+                mf.guidanceLineSpeed = (short)(targetSpeed * 10);
 
                 pivotAxlePosRP = mf.pivotAxlePos;
 
@@ -201,7 +208,13 @@ namespace AgOpenGPS
                 //if end of the line then stop
                 if (!isEndOfTheRecLine)
                 {
-                    mf.sim.stepDistance = recList[C].speed / 34.86;
+                    // Get speed from recorded path and convert to mm/s (*10 for precision)
+                    double targetSpeed = recList[C].speed;
+                    mf.sim.stepDistance = targetSpeed / 34.86;
+                    
+                    // Store speed in same way as steer angle - as short integer
+                    mf.guidanceLineSpeed = (short)(targetSpeed * 10);
+                    
                     north = recList[C].northing;
 
                     pathCount = recList.Count - C;

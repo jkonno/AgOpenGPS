@@ -23,7 +23,7 @@ namespace AgOpenGPS
         public StringBuilder sbGrid = new StringBuilder();
 
         // autosteer variables for sending serial
-        public short guidanceLineDistanceOff, guidanceLineSteerAngle;
+        //public short guidanceLineDistanceOff, guidanceLineSteerAngle;
         public double avGuidanceSteerAngle;
 
         public short errorAngVel;
@@ -1027,6 +1027,7 @@ namespace AgOpenGPS
 
                 //send the steer angle
                 guidanceLineSteerAngle = (Int16)(vehicle.driveFreeSteerAngle * 100);
+                
 
                 p_254.pgn[p_254.steerAngleHi] = unchecked((byte)(guidanceLineSteerAngle >> 8));
                 p_254.pgn[p_254.steerAngleLo] = unchecked((byte)(guidanceLineSteerAngle));
@@ -1036,6 +1037,20 @@ namespace AgOpenGPS
 
             //out serial to autosteer module  //indivdual classes load the distance and heading deltas 
             SendPgnToLoop(p_254.pgn);
+
+            // Add speed data to new PGN
+            p_230.pgn[p_230.speedLo] = unchecked((byte)((int)(Math.Abs(avgSpeed) * 10.0)));
+            p_230.pgn[p_230.speedHi] = unchecked((byte)((int)(Math.Abs(avgSpeed) * 10.0) >> 8));
+
+            // Add target speed from guidance when following a path
+            if (recPath.isDrivingRecordedPath || recPath.isFollowingDubinsToPath)
+            {
+                p_230.pgn[p_230.targetSpeedLo] = unchecked((byte)(guidanceLineSpeed));
+                p_230.pgn[p_230.targetSpeedHi] = unchecked((byte)(guidanceLineSpeed >> 8));
+            }
+
+            // Send speed PGN
+            SendPgnToLoop(p_230.pgn);
 
             //for average cross track error
             if (guidanceLineDistanceOff < 29000)
