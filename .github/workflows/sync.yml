@@ -1,0 +1,24 @@
+name: Sync Fork with Upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Add Upstream Repo
+        run: |
+          git remote add upstream https://github.com/farmerbriantee/AgOpenGPS.git
+          git fetch upstream
+
+      - name: Merge Upstream Develop
+        run: |
+          git checkout develop
+          git merge upstream/develop
+          git push origin develop
