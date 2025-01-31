@@ -1027,7 +1027,7 @@ namespace AgOpenGPS
 
                 //send the steer angle
                 guidanceLineSteerAngle = (Int16)(vehicle.driveFreeSteerAngle * 100);
-                
+
 
                 p_254.pgn[p_254.steerAngleHi] = unchecked((byte)(guidanceLineSteerAngle >> 8));
                 p_254.pgn[p_254.steerAngleLo] = unchecked((byte)(guidanceLineSteerAngle));
@@ -1048,6 +1048,18 @@ namespace AgOpenGPS
                 p_230.pgn[p_230.targetSpeedLo] = unchecked((byte)(guidanceLineSpeed));
                 p_230.pgn[p_230.targetSpeedHi] = unchecked((byte)(guidanceLineSpeed >> 8));
             }
+
+            // Calculate curvature from steer angle: k = tan(steerAngle) / wheelbase
+            double steerRad = guidanceLineSteerAngle * 0.01 * 0.0174533; // Convert from centidegrees to radians
+            double curvature = Math.Tan(steerRad) / vehicle.wheelbase;
+
+            // Scale curvature by 10000 to maintain precision in fixed-point
+            short scaledCurvature = (short)(curvature * 10000);
+
+            // Send curvature instead of steer angle
+            p_230.pgn[p_230.curvatureLo] = unchecked((byte)(scaledCurvature));
+            p_230.pgn[p_230.curvatureHi] = unchecked((byte)(scaledCurvature >> 8));
+
 
             // Send speed PGN
             SendPgnToLoop(p_230.pgn);

@@ -456,6 +456,8 @@ namespace AgOpenGPS
             public int targetSpeedLo = 7;  // Add these two new fields
             public int targetSpeedHi = 8;  // for target speed
             public int movementFlag = 9; // F / R / stop
+            public int curvatureLo = 10;
+            public int curvatureHi = 11;
             public void Reset()
             {
             }
