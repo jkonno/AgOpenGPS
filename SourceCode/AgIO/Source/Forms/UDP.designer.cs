@@ -239,6 +239,13 @@ namespace AgIO
                             SendSteerModulePort(data, data.Length);
                             break;
                         }
+
+                    case 0xE6: //230 Curvature/Speed Data
+                        {
+                            SendSteerModulePort(data, data.Length);
+                            canHandler.SendPgnToCANBus(data);  // Pass the whole data package
+                            break;
+                        }
                 }
             }                            
         }

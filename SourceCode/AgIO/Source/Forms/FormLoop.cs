@@ -73,6 +73,8 @@ namespace AgIO
 
         public int focusSkipCounter = 310;
 
+        private CANHandler canHandler;
+
         public FormLoop()
         {
             InitializeComponent();
@@ -288,6 +290,11 @@ namespace AgIO
                 Log.EventWriter("Run GPS_Out");
             }
 
+            canHandler = new CANHandler(this);  // Instantiate the CAN handler
+            if (!canHandler.InitCAN())
+            {
+                TimedMessageBox(2000, "Warning", "CAN Interface Not Available");
+            }
         }
 
         private void FormLoop_FormClosing(object sender, FormClosingEventArgs e)
@@ -328,6 +335,8 @@ namespace AgIO
                 DateTime.Now.ToString("f", CultureInfo.InvariantCulture) + "\n\r");
 
             Log.FileSaveSystemEvents();
+
+            canHandler?.Close();  // Close the CAN handler
         }
 
         private void oneSecondLoopTimer_Tick(object sender, EventArgs e)

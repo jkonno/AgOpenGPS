@@ -53,4 +53,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Kvaser.CanLib">
+      <HintPath>..\..\References\Kvaser.CanLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
